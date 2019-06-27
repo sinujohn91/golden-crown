@@ -1,0 +1,1 @@
+(ns golden-crown.persistence.memory.kingdom)
