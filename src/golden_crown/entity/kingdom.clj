@@ -1,7 +1,7 @@
 (ns golden-crown.entity.kingdom)
 
 ;; Entity to contain the kingdom
-;; Properties: id::int, emblem::string, animal::string, alliesOf::set
+;; Properties: id::int, emblem::string, name::string, allies-of::set
 
 (defn process-message
   "figure out if its an ally or not"
@@ -9,5 +9,5 @@
 
 (defn create
   "Create and return a kingdom
-  @params emblem::string, animal::string"
-  [emblem animal])
+  @params name::string, emblem::string"
+  [name emblem])

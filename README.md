@@ -23,4 +23,4 @@ This will be initalized by the core to start listening to `stdin`. It will read 
 ## Persistence
 ### Memory
 #### Kingdom
-We will persist the kindom data in the memory as a list.
+We will persist the kindom data in the memory as a list. Entity will be interacting with this layer.
