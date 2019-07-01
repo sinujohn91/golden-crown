@@ -5,17 +5,19 @@
 ;; Possible to get, put, delete kingdoms from memory
 ;; We could probably create a protocol for this
 
-(def kingdoms (atom {}))
+(def ^:private kingdoms (atom {}))
 
 (defn get
   "Should return back a kingdom
-  @params map of filters
+  @params nil or hashmap of filters
   @return kingdom"
-  [{:keys [id ally-of] :as filters}]
-  (if id
-    (clojure.core/get @kingdoms id)
-    (cond->> (vals @kingdoms)
-      ally-of (filter #(= ally-of (:ally-of %))))))
+  ([]
+   (get {}))
+  ([{:keys [id ally-of] :as filters}]
+   (if id
+     (clojure.core/get @kingdoms id)
+     (cond->> (vals @kingdoms)
+       ally-of (filter #(= ally-of (:ally-of %)))))))
 
 
 (defn put
@@ -24,7 +26,7 @@
   @return kingdom"
   [kingdom]
   (let [kingdom-id (-> (last @kingdoms)
-                       :id
+                       first
                        (or 0)
                        inc)
         kingdom (assoc kingdom :id kingdom-id)]
@@ -39,3 +41,8 @@
   (let [kingdom (assoc kingdom :id kingdom-id)]
     (swap! kingdoms #(assoc % kingdom-id kingdom))
     kingdom))
+
+(defn drop
+  "Reset kingdoms to an empty list"
+  []
+  (reset! kingdoms {}))

@@ -1,8 +1,11 @@
 (ns golden-crown.entity.kingdom-test
-  (:require [clojure.test :refer [deftest testing is]]
+  (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [golden-crown.entity.message :as en-message]
             [golden-crown.entity.kingdom :as en-kingdom]
-            [golden-crown.persistence.memory.kingdom :as mem-kingdom]))
+            [golden-crown.persistence.memory.kingdom :as mem-kingdom]
+            [golden-crown.test-utils :as test-utils]))
+
+(use-fixtures :each test-utils/with-clean-memory)
 
 (deftest create
   (testing "It should create a kingdom"
@@ -40,6 +43,14 @@
       (is (= expected-allies actual-allies)))))
 
 (deftest allies
+  (testing "It should return empty seq if the ruler doesn't have any allies"
+    (let [emblem "Panda"
+          name "Land"
+          {kingdom-id :id} (en-kingdom/create name emblem)
+          message (en-message/create kingdom-id "Non Allied worthy message")
+          _ (en-kingdom/process-message kingdom-id message)]
+      (is (empty? (en-kingdom/allies)))))
+
   (testing "It should return the kingdom which are allies to the ruler"
     (let [emblem "Panda"
           name "Land"
@@ -47,11 +58,4 @@
           message (en-message/create kingdom-id "I need to add a p, n, and d")
           _ (en-kingdom/process-message kingdom-id message)]
       (is (= [kingdom-id] (map :id (en-kingdom/allies))))))
-
-  (testing "It should return empty seq if the ruler doesn't have any allies"
-    (let [emblem "Panda"
-          name "Land"
-          {kingdom-id :id} (en-kingdom/create name emblem)
-          message (en-message/create kingdom-id "Non Allied worthy message")
-          _ (en-kingdom/process-message kingdom-id message)]
-      (is (empty? (en-kingdom/allies))))))
+  )

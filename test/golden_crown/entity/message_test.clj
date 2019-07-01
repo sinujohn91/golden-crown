@@ -1,7 +1,10 @@
 (ns golden-crown.entity.message-test
-  (:require [clojure.test :refer [deftest testing is]]
+  (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [golden-crown.entity.kingdom :as en-kingdom]
-            [golden-crown.entity.message :as en-message]))
+            [golden-crown.entity.message :as en-message]
+            [golden-crown.test-utils :as test-utils]))
+
+(use-fixtures :each test-utils/with-clean-memory)
 
 (deftest create
   (testing "It should return back a message hashmap"
