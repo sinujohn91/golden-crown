@@ -1,8 +1,9 @@
-(ns golden-crown.entity.message)
+(ns golden-crown.entity.message
+  (:require [clojure.string :as string]))
 
 ;; Entity to contain a message
 ;; Its responsible for parsing through the message
-;; Properties: kingdom-id, type, subtype, message
+;; Properties: kingdom-name, type, subtype, message
 
 ;; could move to utils if required
 (defn- match?
@@ -32,10 +33,16 @@
 
 (defn create
   "Create a new message
-  @params kingdom-id::int, message::string
+  @params message::string
   @return entity"
-  [kingdom-id message]
-  {:kingdom-id kingdom-id
-   :message message
-   :type (get-type message)
-   :subtype (get-subtype message)})
+  [message]
+  (let [type (get-type message)
+        kingdom-name (when (= type :action)
+                       (-> message (string/split #"," 2) first string/trim))
+        message (if (= type :action)
+                  (-> message (string/split #"," 2) last (string/replace #"\"" "")string/trim)
+                  message)]
+    {:kingdom-name kingdom-name
+     :message message
+     :type type
+     :subtype (get-subtype message)}))

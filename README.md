@@ -6,7 +6,7 @@ A geek trust problem solved using clojure. I have tried to solutionize the probl
 There are six kingdoms that are created as the inital setup, each of which will have an `emblem` and an `animal` associated with it. Kingdom entity will receive a message from the domain which will be decoded to figure out if it wants to be an ally to king shan.
 
 ### Message
-For every message that is receieved from the cli a message entity will be created. A very crude language processing will be done on it to determine its properties. This entity will contain the `kingdom-id`, `type`, `subtype` and the `message` for that particular kingdom.
+For every message that is receieved from the cli a message entity will be created. A very crude language processing will be done on it to determine its properties. This entity will contain the `kingdom-name`, `type`, `subtype` and the `message` for that particular kingdom.
 Messages will have a type based on whether its a `question` or an `action`. `question` will have no kingdom.
 #### Question Message
 `question` messages will be determined by a very crude language processing, essentially checking for certain keywords. The questions will have a subtype, which will be one of these values `:who-is-ruler?` `:allies-of-ruler?`

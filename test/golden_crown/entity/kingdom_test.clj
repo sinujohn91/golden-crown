@@ -12,7 +12,7 @@
     (let [emblem "Panda"
           name "Land"
           {kingdom-id :id} (en-kingdom/create name emblem)
-          actual-kingdom (-> (mem-kingdom/get {:id kingdom-id})
+          actual-kingdom (-> (mem-kingdom/find {:id kingdom-id})
                              (dissoc :id))
           expected-kingdom {:emblem emblem
                             :name name
@@ -24,9 +24,9 @@
     (let [emblem "Panda"
           name "Land"
           {kingdom-id :id} (en-kingdom/create name emblem)
-          message (en-message/create kingdom-id "I need to add a p, n, and d")
-          _ (en-kingdom/process-message kingdom-id message)
-          kingdom (mem-kingdom/get {:id kingdom-id})
+          message (en-message/create "Land, \"I need to add a p, n, and d\"")
+          _ (en-kingdom/process-message message)
+          kingdom (mem-kingdom/find {:id kingdom-id})
           expected-allies "King Shan"
           actual-allies (:ally-of kingdom)]
       (is (= expected-allies actual-allies))))
@@ -35,9 +35,9 @@
     (let [emblem "Panda"
           name "Land"
           {kingdom-id :id} (en-kingdom/create name emblem)
-          message (en-message/create kingdom-id "Non Allied worthy message")
-          _ (en-kingdom/process-message kingdom-id message)
-          kingdom (mem-kingdom/get {:id kingdom-id})
+          message (en-message/create "Land, \"Non Allied worthy message\"")
+          _ (en-kingdom/process-message message)
+          kingdom (mem-kingdom/find {:id kingdom-id})
           expected-allies nil
           actual-allies (:ally-of kingdom)]
       (is (= expected-allies actual-allies)))))
@@ -47,15 +47,14 @@
     (let [emblem "Panda"
           name "Land"
           {kingdom-id :id} (en-kingdom/create name emblem)
-          message (en-message/create kingdom-id "Non Allied worthy message")
-          _ (en-kingdom/process-message kingdom-id message)]
+          message (en-message/create "Land, \"Non Allied worthy message\"")
+          _ (en-kingdom/process-message message)]
       (is (empty? (en-kingdom/allies)))))
 
   (testing "It should return the kingdom which are allies to the ruler"
-    (let [emblem "Panda"
-          name "Land"
+    (let [emblem "Octopus"
+          name "Water"
           {kingdom-id :id} (en-kingdom/create name emblem)
-          message (en-message/create kingdom-id "I need to add a p, n, and d")
-          _ (en-kingdom/process-message kingdom-id message)]
-      (is (= [kingdom-id] (map :id (en-kingdom/allies))))))
-  )
+          message (en-message/create "Water, \"I need to add o,c,t,o,p,u, and s\"")
+          _ (en-kingdom/process-message message)]
+      (is (= [kingdom-id] (map :id (en-kingdom/allies)))))))

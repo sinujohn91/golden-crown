@@ -14,10 +14,10 @@
 
 (defn process-message
   "Figure out if its an ally or not
-  @params kingdom-id:int, message:message-entity
+  @params message:message-entity
   @return nil"
-  [kingdom-id message]
-  (let [{:keys [emblem] :as kingdom} (mem-kingdom/get {:id kingdom-id})
+  [message]
+  (let [{:keys [emblem id] :as kingdom} (mem-kingdom/find {:name (:kingdom-name message)})
         message-letter-freq (frequencies (string/lower-case (:message message)))
         ally? (->> (string/lower-case emblem)
                    frequencies
@@ -25,7 +25,7 @@
                              (<= count (or (get message-letter-freq letter)
                                            0)))))]
     (when ally?
-      (mem-kingdom/update kingdom-id (assoc kingdom :ally-of "King Shan")))))
+      (mem-kingdom/update id (assoc kingdom :ally-of "King Shan")))))
 
 (defn create
   "Create and return a kingdom

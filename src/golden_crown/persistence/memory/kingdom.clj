@@ -8,17 +8,23 @@
 (def ^:private kingdoms (atom {}))
 
 (defn get
-  "Should return back a kingdom
+  "Should return back kingdoms which match the filter
   @params nil or hashmap of filters
-  @return kingdom"
+  @return kingdoms"
   ([]
    (get {}))
-  ([{:keys [id ally-of] :as filters}]
-   (if id
-     (clojure.core/get @kingdoms id)
-     (cond->> (vals @kingdoms)
-       ally-of (filter #(= ally-of (:ally-of %)))))))
+  ([{:keys [id ally-of name] :as filters}]
+   (cond->> (vals @kingdoms)
+     id (filter #(= id (:id %)))
+     ally-of (filter #(= ally-of (:ally-of %)))
+     name (filter #(= name (:name %))))))
 
+(defn find
+  "Should return back the first kingdom which matches the filter
+  @params filters
+  @return kingdom"
+  [filters]
+  (-> (get filters) first))
 
 (defn put
   "Add a new kingdom to the list

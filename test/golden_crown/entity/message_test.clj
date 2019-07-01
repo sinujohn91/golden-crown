@@ -9,19 +9,20 @@
 (deftest create
   (testing "It should return back a message hashmap"
     (let [{kingdom-id :id} (en-kingdom/create "Land" "Panda")
-          message-str "Some action Message"
-          actual-message (-> (en-message/create 1 message-str)
-                             (select-keys #{:type :subtype :message}))
+          message-str "Land, \"Some action Message\""
+          actual-message (-> (en-message/create message-str)
+                             (select-keys #{:type :subtype :message :kingdom-name}))
           expected-message {:type :action
                             :subtype nil
-                            :message message-str}]
+                            :message "Some action Message"
+                            :kingdom-name "Land"}]
       (is (= expected-message actual-message))))
 
-  (testing "It should be able to correctly identity if its a type"
+  (testing "It should be able to correctly identity its type"
     (let [{kingdom-id :id} (en-kingdom/create "Land" "Panda")
-          actual-question-type (-> (en-message/create 1 "is this a question?")
+          actual-question-type (-> (en-message/create "is this a question?")
                                    :type)
-          actual-action-type (-> (en-message/create 1 "this is an action")
+          actual-action-type (-> (en-message/create "Land, \"this is an action\"")
                                  :type)]
       (is (= actual-question-type :question))
       (is (= actual-action-type :action))))
@@ -30,7 +31,7 @@
     (let [{kingdom-id :id} (en-kingdom/create "Land" "Panda")
           who-is-the-ruler-question-strs #{"Who is the ruler of Southeros?"}
           actual-subtype (->> who-is-the-ruler-question-strs
-                              (map #(en-message/create 1 %))
+                              (map #(en-message/create %))
                               (map :subtype)
                               (into #{}))
           expected-subtype #{:who-is-ruler?}]
@@ -40,9 +41,8 @@
     (let [{kingdom-id :id} (en-kingdom/create "Land" "Panda")
           who-are-allies-question-strs #{"Allies of King Shan?" "Allies of Ruler?"}
           actual-subtype (->> who-are-allies-question-strs
-                              (map #(en-message/create 1 %))
+                              (map #(en-message/create %))
                               (map :subtype)
                               (into #{}))
           expected-subtype #{:allies-of-ruler?}]
       (is (= expected-subtype actual-subtype)))))
-
