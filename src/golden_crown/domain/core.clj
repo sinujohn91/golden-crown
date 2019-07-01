@@ -1,5 +1,6 @@
 (ns golden-crown.domain.core
-  (:require [golden-crown.entity.kingdom :as kingdom]
+  (:require [clojure.string :as string]
+            [golden-crown.entity.kingdom :as kingdom]
             [golden-crown.entity.message :as message]))
 
 ;; Core business logic
@@ -21,8 +22,24 @@
   (doseq [kingdom kingdoms]
     (kingdom/create (:name kingdom) (:emblem kingdom))))
 
+(defn- get-ruler
+  []
+  (let [allies (kingdom/get {:ally-of "King Shan"})]
+    (if (>= (count allies) 3)
+      "King Shan"
+      "None")))
+
 (defn process-message
   "Process a message recieved from the gateway
   @params emblem::string, message::string
   @return null"
-  [emblem message])
+  [message]
+  (let [{:keys [type subtype] :as message} (message/create message)]
+    (cond
+      (and (= type :question)
+           (= subtype :who-is-ruler?)) (get-ruler)
+      (and (= type :quesion)
+           (= subtype :allies-of-king?)) (->> (kingdom/get {:ally-of "King Shan"})
+                                              (map :name)
+                                              (string/join ", "))
+      (= type :action) (kingdom/process-message message))))

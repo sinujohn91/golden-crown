@@ -1,6 +1,7 @@
 (ns golden-crown.entity.kingdom
   (:require [clojure.string :as string]
-             [golden-crown.persistence.memory.kingdom :as mem-kingdom]))
+            [golden-crown.persistence.memory.kingdom :as mem-kingdom])
+  (:refer-clojure :exclude [get find]))
 
 ;; Entity to contain the kingdom
 ;; Properties: id::int, emblem::string, name::string, ally-of::string
@@ -22,10 +23,14 @@
         ally? (->> (string/lower-case emblem)
                    frequencies
                    (every? (fn [[letter count]]
-                             (<= count (or (get message-letter-freq letter)
+                             (<= count (or (clojure.core/get message-letter-freq letter)
                                            0)))))]
     (when ally?
       (mem-kingdom/update id (assoc kingdom :ally-of "King Shan")))))
+
+(def get mem-kingdom/get)
+
+(def find mem-kingdom/find)
 
 (defn create
   "Create and return a kingdom
