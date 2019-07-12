@@ -40,10 +40,11 @@
     (cond
       (and (= type :question)
            (= subtype :who-is-ruler?)) (get-ruler)
-      (and (= type :quesion)
-           (= subtype :allies-of-king?)) (or (->> (kingdom/get {:ally-of "King Shan"})
-                                                  (map :name)
-                                                  (string/join ", "))
+      (and (= type :question)
+           (= subtype :allies-of-ruler?)) (or (->> (kingdom/get {:ally-of "King Shan"})
+                                                   (map :name)
+                                                   (string/join ", ")
+                                                   not-empty)
                                              "None")
       (= type :question) "Sorry, dont have an answer for your question"
       (= type :action) (kingdom/process-message message))))
