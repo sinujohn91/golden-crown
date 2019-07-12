@@ -45,4 +45,5 @@
                                                   (map :name)
                                                   (string/join ", "))
                                              "None")
+      (= type :question) "Sorry, dont have an answer for your question"
       (= type :action) (kingdom/process-message message))))

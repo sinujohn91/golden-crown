@@ -22,14 +22,16 @@
       (let [expected-result "None"
             actual-result (domain/process-message "Who is the ruler?")]
         (is (= expected-result actual-result))))
-    (testing "When there is no ruler it should answer None"
-      (let [expected-result "None"
-            actual-result (domain/process-message "Who is the ruler?")]
-        (is (= expected-result actual-result))))
+
     (testing "When there are more than 3 allies it should answer King Shan"
       (let [_ (domain/process-message "Air, \"oaaawaala\"")
             _ (domain/process-message "Land, \"a1d22n333a4444p\"")
             _ (domain/process-message "Ice, \"zmzmzmzaztzozh\"")
             expected-result "King Shan"
             actual-result (domain/process-message "Who is the ruler?")]
+        (is (= expected-result actual-result))))
+
+    (testing "It should return back a message saying cant understand question if the question subtype is neither :who-is-ruler or allies-of-king?"
+      (let [expected-result "Sorry, dont have an answer for your question"
+            actual-result (domain/process-message "some random question?")]
         (is (= expected-result actual-result))))))
