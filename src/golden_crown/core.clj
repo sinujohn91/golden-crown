@@ -9,13 +9,15 @@
 (defn- start-reading-input
   "Indefinitely read from the cli and call the callback function with the input"
   [processing-fn]
-  (doseq [ln (cli/read-line)]
-    (println (processing-fn ln))
-    (processing-fn ln)))
+  (loop [ln (read-line)]
+    (when-not (= "exit" ln)
+      (let [output (processing-fn ln)]
+        (when output
+          (cli/put output)))
+      (recur (read-line)))))
 
 (defn -main
   []
+  (println "Type exit to quit")
   (domain/init)
-  (let [output (start-reading-input domain/process-message)]
-    (when output
-      (cli/put output))))
+  (start-reading-input domain/process-message))

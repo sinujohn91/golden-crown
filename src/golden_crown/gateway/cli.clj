@@ -6,7 +6,7 @@
   "Read one line from the stdin
   @return string"
   []
-  (line-seq (java.io.BufferedReader. *in*)))
+  (read-line))
 
 (defn put
   "Output a line to the stdout
