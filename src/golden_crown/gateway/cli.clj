@@ -1,4 +1,5 @@
-(ns golden-crown.gateway.cli)
+(ns golden-crown.gateway.cli
+  (:refer-clojure :exclude [read-line]))
 
 ;; functions for cli operations
 

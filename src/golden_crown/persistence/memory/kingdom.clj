@@ -1,5 +1,5 @@
 (ns golden-crown.persistence.memory.kingdom
-  (:refer-clojure :exclude [get put update]))
+  (:refer-clojure :exclude [get put update drop find]))
 
 ;; Functions for persisting data to memory
 ;; Possible to get, put, delete kingdoms from memory

@@ -18,6 +18,8 @@
 
 (defn -main
   []
-  (println "Type exit to quit")
+  (println "******Welcome to the Tame of Thrones******")
+  (println "Type your question(eg. Who is the ruler?) or action (eg. Air, “Let’s swing the sword together”)")
+  (println "Type exit or ctrl+c to exit the game")
   (domain/init)
   (start-reading-input domain/process-message))
