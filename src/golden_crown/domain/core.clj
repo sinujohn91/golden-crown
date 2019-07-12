@@ -47,4 +47,5 @@
                                                    not-empty)
                                              "None")
       (= type :question) "Sorry, dont have an answer for your question"
-      (= type :action) (kingdom/process-message message))))
+      (= type :action) (do (kingdom/process-message message)
+                           nil))))
