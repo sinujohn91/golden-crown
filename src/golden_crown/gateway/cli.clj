@@ -7,7 +7,7 @@
   "Read one line from the stdin
   @return string"
   []
-  (read-line))
+  (clojure.core/read-line))
 
 (defn put
   "Output a line to the stdout

@@ -9,12 +9,12 @@
 (defn- start-reading-input
   "Indefinitely read from the cli and call the callback function with the input"
   [processing-fn]
-  (loop [ln (read-line)]
+  (loop [ln (cli/read-line)]
     (when-not (= "exit" ln)
       (let [output (processing-fn ln)]
         (when output
           (cli/put output)))
-      (recur (read-line)))))
+      (recur (cli/read-line)))))
 
 (defn -main
   []
