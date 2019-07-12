@@ -15,10 +15,13 @@
           expected-kingdom-names #{"Land" "Water" "Ice" "Air" "Fire" "Space"}]
       (is (= expected-kingdom-names actual-kingdom-names)))))
 
-
 (deftest process-message
   (domain/init)
   (testing "When a question for who is the ruler is recieved"
+    (testing "When there is no ruler it should answer None"
+      (let [expected-result "None"
+            actual-result (domain/process-message "Who is the ruler?")]
+        (is (= expected-result actual-result))))
     (testing "When there is no ruler it should answer None"
       (let [expected-result "None"
             actual-result (domain/process-message "Who is the ruler?")]

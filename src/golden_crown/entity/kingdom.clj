@@ -18,15 +18,16 @@
   @params message:message-entity
   @return nil"
   [message]
-  (let [{:keys [emblem id] :as kingdom} (mem-kingdom/find {:name (:kingdom-name message)})
-        message-letter-freq (frequencies (string/lower-case (:message message)))
-        ally? (->> (string/lower-case emblem)
-                   frequencies
-                   (every? (fn [[letter count]]
-                             (<= count (or (clojure.core/get message-letter-freq letter)
-                                           0)))))]
-    (when ally?
-      (mem-kingdom/update id (assoc kingdom :ally-of "King Shan")))))
+  (when (:kingdom-name message)
+    (let [{:keys [emblem id] :as kingdom} (mem-kingdom/find {:name (:kingdom-name message)})
+          message-letter-freq (frequencies (string/lower-case (:message message)))
+          ally? (->> (string/lower-case emblem)
+                     frequencies
+                     (every? (fn [[letter count]]
+                               (<= count (or (clojure.core/get message-letter-freq letter)
+                                             0)))))]
+      (when ally?
+        (mem-kingdom/update id (assoc kingdom :ally-of "King Shan"))))))
 
 (def get mem-kingdom/get)
 
