@@ -24,3 +24,11 @@ This will be initalized by the core to start listening to `stdin`. It will read 
 ### Memory
 #### Kingdom
 We will persist the kindom data in the memory as a list. Entity will be interacting with this layer.
+
+## Install and Run
+
+After cloning the repo in the terminal run the following:
+```sh
+brew install boot-clj
+boot run
+```
