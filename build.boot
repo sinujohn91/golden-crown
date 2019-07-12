@@ -11,7 +11,12 @@
       :version (get-env :version)}
  jar {:main 'golden-crown.core})
 
-(require '[adzerk.boot-test :refer :all])
+(require '[adzerk.boot-test :refer :all]
+         '[golden-crown.core :as core])
+
+(deftask run
+  []
+  (core/-main))
 
 (deftask build
   []
