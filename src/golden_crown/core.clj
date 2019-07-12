@@ -1,7 +1,7 @@
 (ns golden-crown.core
   (:require [golden-crown.domain.core :as domain]
             [golden-crown.gateway.cli :as cli])
-  (:gen-class))
+  (:gen-class :main true))
 
 ;; Initialize the cli and call the domain function for processing each message.
 ;; Print the usage

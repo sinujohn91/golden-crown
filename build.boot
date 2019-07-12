@@ -15,4 +15,4 @@
 
 (deftask build
   []
-  (comp (aot :namespace 'golden-crown.core) (pom) (uber) (jar) (target)))
+  (comp (aot :all true) (pom) (uber) (jar) (target)))
